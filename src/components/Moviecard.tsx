@@ -1,10 +1,13 @@
 import type { TMovie } from "../types/movieTypes";
+import { useWatchlist } from "../context/movieContext";
 
 type MovieCardProps = {
   movie: TMovie;
 };
 
 export default function MovieCard({ movie }: MovieCardProps) {
+  const { addToWatchlist, watchlist } = useWatchlist();
+  const isInWatchlist = watchlist.some((m) => m.imdbID === movie.imdbID);
   return (
     <div className="group relative bg-gray-900 rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl border border-white/5 hover:border-primary/50">
       {/* Poster Image */}
@@ -37,8 +40,11 @@ export default function MovieCard({ movie }: MovieCardProps) {
           </span>
         </div>
 
-        <button className="w-full py-2 px-4 text-sm font-medium rounded transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 bg-white/10 hover:bg-primary text-white">
-          Remove from Watchlist
+        <button
+          onClick={() => addToWatchlist(movie)}
+          className="w-full py-2 px-4 text-sm font-medium rounded transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 bg-white/10 hover:bg-primary text-white"
+        >
+          {isInWatchlist ? "Remove From Watchlist" : "Add from Watchlist"}
         </button>
       </div>
     </div>
